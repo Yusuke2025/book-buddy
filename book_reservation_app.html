@@ -1,0 +1,1001 @@
+    <style>
+        body {
+            font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #004d99;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="password"],
+        textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        textarea {
+            height: 150px;
+            resize: vertical;
+        }
+        button {
+            background-color: #004d99;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            display: block;
+            margin: 20px auto;
+        }
+        button:hover {
+            background-color: #003366;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 4px;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .info {
+            background-color: #e2f0fb;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        .book-list {
+            margin-top: 20px;
+        }
+        .book-item {
+            padding: 10px;
+            border: 1px solid #ddd;
+            margin-bottom: 5px;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .book-status {
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 14px;
+        }
+        .pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        .reserved {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+        .loading {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .hidden {
+            display: none;
+        }
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+        .checkbox-group input[type="checkbox"] {
+            margin-right: 8px;
+        }
+        .footer {
+            margin-top: 30px;
+            font-size: 12px;
+            color: #666;
+            text-align: center;
+        }
+        .history-section {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+        .history-item {
+            padding: 8px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        .tab-container {
+            margin-top: 20px;
+        }
+        .tab-buttons {
+            display: flex;
+            border-bottom: 1px solid #ccc;
+        }
+        .tab-button {
+            padding: 10px 15px;
+            cursor: pointer;
+            background-color: #f1f1f1;
+            border: 1px solid #ccc;
+            border-bottom: none;
+            border-radius: 4px 4px 0 0;
+            margin-right: 5px;
+        }
+        .tab-button.active {
+            background-color: white;
+            border-bottom: 1px solid white;
+            margin-bottom: -1px;
+        }
+        .tab-content {
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-top: none;
+            border-radius: 0 0 4px 4px;
+        }
+        .system-status {
+            padding: 8px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            color: #495057;
+        }
+    </style><!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>中央区立図書館 予約システム</title>
+    <style>
+        body {
+            font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #004d99;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="password"],
+        textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        textarea {
+            height: 150px;
+            resize: vertical;
+        }
+        button {
+            background-color: #004d99;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            display: block;
+            margin: 20px auto;
+        }
+        button:hover {
+            background-color: #003366;
+        }
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 4px;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .book-list {
+            margin-top: 20px;
+        }
+        .book-item {
+            padding: 10px;
+            border: 1px solid #ddd;
+            margin-bottom: 5px;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .book-status {
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 14px;
+        }
+        .pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        .reserved {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+        .loading {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>中央区立図書館 予約システム</h1>
+        
+        <!-- システム接続ステータス -->
+        <div class="system-status" id="system-status">
+            システム接続状態: 確認中...
+        </div>
+        
+        <!-- ログインフォーム -->
+        <div id="login-form">
+            <div class="form-group">
+                <label for="username">ユーザーID:</label>
+                <input type="text" id="username" placeholder="図書館カード番号を入力">
+            </div>
+            <div class="form-group">
+                <label for="password">パスワード:</label>
+                <input type="password" id="password" placeholder="パスワードを入力">
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="save-login">
+                <label for="save-login">ログイン情報を保存する（ローカルのみ）</label>
+            </div>
+            <button id="login-btn">ログイン</button>
+        </div>
+        
+        <!-- 予約フォーム (最初は非表示) -->
+        <div id="reservation-form" class="hidden">
+            <div class="tab-container">
+                <div class="tab-buttons">
+                    <div class="tab-button active" data-tab="new-reservation">新規予約</div>
+                    <div class="tab-button" data-tab="history">予約履歴</div>
+                    <div class="tab-button" data-tab="settings">設定</div>
+                </div>
+                
+                <div class="tab-content">
+                    <!-- 新規予約タブ -->
+                    <div id="new-reservation" class="tab-panel">
+                        <div class="form-group">
+                            <label for="book-list">予約したい本のリスト:</label>
+                            <textarea id="book-list" placeholder="予約したい本を1行ずつ入力してください。例:&#10;『起業のファイナンス』磯崎哲也&#10;『ストーリーとしての競争戦略』楠木建"></textarea>
+                        </div>
+                        <div class="button-group">
+                            <button id="search-btn">検索して予約</button>
+                            <button id="clear-btn">クリア</button>
+                        </div>
+                        
+                        <div id="loading" class="loading hidden">
+                            <p>検索中・予約処理中...</p>
+                        </div>
+                        
+                        <div id="results" class="book-list hidden">
+                            <h2>予約状況</h2>
+                            <div id="result-list"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- 予約履歴タブ -->
+                    <div id="history" class="tab-panel hidden">
+                        <h2>予約履歴</h2>
+                        <div id="history-list" class="history-section">
+                            <p>履歴がありません</p>
+                        </div>
+                    </div>
+                    
+                    <!-- 設定タブ -->
+                    <div id="settings" class="tab-panel hidden">
+                        <h2>アプリ設定</h2>
+                        <div class="form-group">
+                            <label for="auto-login">自動ログイン:</label>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="auto-login">
+                                <label for="auto-login">次回から自動的にログインする</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="notification">通知設定:</label>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="enable-notifications">
+                                <label for="enable-notifications">予約完了時に通知を表示する</label>
+                            </div>
+                        </div>
+                        <button id="save-settings-btn">設定を保存</button>
+                        <button id="logout-btn">ログアウト</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="status-message" class="status hidden"></div>
+        
+        <div class="footer">
+            <p>中央区立図書館予約システム - 非公式ツール</p>
+            <p>※このアプリケーションは図書館の公式アプリではありません。図書館システムの利用規約を確認の上ご利用ください。</p>
+        </div>
+    </div>
+    
+    <script>
+        // DOM要素の取得
+        const loginForm = document.getElementById('login-form');
+        const reservationForm = document.getElementById('reservation-form');
+        const loginBtn = document.getElementById('login-btn');
+        const searchBtn = document.getElementById('search-btn');
+        const clearBtn = document.getElementById('clear-btn');
+        const logoutBtn = document.getElementById('logout-btn');
+        const saveSettingsBtn = document.getElementById('save-settings-btn');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const saveLoginCheckbox = document.getElementById('save-login');
+        const autoLoginCheckbox = document.getElementById('auto-login');
+        const enableNotificationsCheckbox = document.getElementById('enable-notifications');
+        const bookListTextarea = document.getElementById('book-list');
+        const resultsList = document.getElementById('result-list');
+        const resultsContainer = document.getElementById('results');
+        const loadingIndicator = document.getElementById('loading');
+        const statusMessage = document.getElementById('status-message');
+        const systemStatus = document.getElementById('system-status');
+        const historyList = document.getElementById('history-list');
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabPanels = document.querySelectorAll('.tab-panel');
+        
+        // ログイン状態とセッション情報
+        let isLoggedIn = false;
+        let sessionToken = null;
+        let reservationResults = [];
+        
+        // 図書館システムのベースURL
+        const LIBRARY_BASE_URL = 'https://www.library.city.chuo.tokyo.jp';
+        
+        // システム接続状態の確認
+        async function checkSystemConnection() {
+            try {
+                // 実際にはここで図書館システムのステータスを確認するリクエストを送信します
+                // このデモでは模擬的に接続可能な状態とします
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                // 90%の確率で接続成功とする
+                const isConnected = Math.random() < 0.9;
+                
+                if (isConnected) {
+                    systemStatus.textContent = 'システム接続状態: 接続済み';
+                    systemStatus.style.backgroundColor = '#d4edda';
+                    systemStatus.style.color = '#155724';
+                    return true;
+                } else {
+                    systemStatus.textContent = 'システム接続状態: 接続エラー（図書館システムがメンテナンス中の可能性があります）';
+                    systemStatus.style.backgroundColor = '#f8d7da';
+                    systemStatus.style.color = '#721c24';
+                    return false;
+                }
+            } catch (error) {
+                systemStatus.textContent = `システム接続状態: エラー (${error.message})`;
+                systemStatus.style.backgroundColor = '#f8d7da';
+                systemStatus.style.color = '#721c24';
+                return false;
+            }
+        }
+        
+        // タブ切り替え機能
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const tabId = button.getAttribute('data-tab');
+                
+                // アクティブタブの切り替え
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                
+                // タブパネルの切り替え
+                tabPanels.forEach(panel => {
+                    if (panel.id === tabId) {
+                        panel.classList.remove('hidden');
+                    } else {
+                        panel.classList.add('hidden');
+                    }
+                });
+                
+                // 履歴タブが選択された場合、履歴を読み込む
+                if (tabId === 'history') {
+                    loadReservationHistory();
+                }
+            });
+        });
+        
+        // 履歴を読み込む関数
+        function loadReservationHistory() {
+            const history = JSON.parse(localStorage.getItem('reservationHistory') || '[]');
+            
+            if (history.length === 0) {
+                historyList.innerHTML = '<p>履歴がありません</p>';
+                return;
+            }
+            
+            historyList.innerHTML = '';
+            
+            // 新しい履歴から順に表示
+            history.reverse().forEach((entry, index) => {
+                const date = new Date(entry.date);
+                const formattedDate = `${date.getFullYear()}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getDate().toString().padStart(2, '0')} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+                
+                const historyItem = document.createElement('div');
+                historyItem.className = 'history-item';
+                historyItem.innerHTML = `
+                    <p><strong>${formattedDate}</strong> - ${entry.books.length}冊の予約処理</p>
+                    <p>成功: ${entry.successCount}冊, 失敗: ${entry.books.length - entry.successCount}冊</p>
+                `;
+                
+                historyList.appendChild(historyItem);
+            });
+        }
+        
+        // 実際のログイン処理
+        loginBtn.addEventListener('click', async () => {
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value.trim();
+            
+            if (!username || !password) {
+                showStatus('ユーザーIDとパスワードを入力してください。', 'error');
+                return;
+            }
+            
+            // システム接続状態を確認
+            const isConnected = await checkSystemConnection();
+            if (!isConnected) {
+                showStatus('図書館システムに接続できません。時間をおいて再度お試しください。', 'error');
+                return;
+            }
+            
+            loadingIndicator.classList.remove('hidden');
+            
+            try {
+                // 実際の図書館システムにログインリクエストを送信
+                const loginResult = await loginToLibrary(username, password);
+                
+                if (loginResult.success) {
+                    showStatus('ログインに成功しました。', 'success');
+                    isLoggedIn = true;
+                    sessionToken = loginResult.sessionToken;
+                    
+                    // ログイン情報を保存（チェックボックスがオンの場合）
+                    if (saveLoginCheckbox && saveLoginCheckbox.checked) {
+                        localStorage.setItem('libraryUsername', username);
+                        localStorage.setItem('libraryPassword', password);
+                        localStorage.setItem('libraryAutoLogin', autoLoginCheckbox && autoLoginCheckbox.checked ? 'true' : 'false');
+                    }
+                    
+                    // フォームの切り替え
+                    loginForm.classList.add('hidden');
+                    reservationForm.classList.remove('hidden');
+                } else {
+                    showStatus(`ログインに失敗しました: ${loginResult.error}`, 'error');
+                }
+            } catch (error) {
+                showStatus(`ログイン処理中にエラーが発生しました: ${error.message}`, 'error');
+            } finally {
+                loadingIndicator.classList.add('hidden');
+            }
+        });
+        
+        // ログアウト処理
+        logoutBtn.addEventListener('click', () => {
+            isLoggedIn = false;
+            sessionToken = null;
+            
+            // フォームの切り替え
+            reservationForm.classList.add('hidden');
+            loginForm.classList.remove('hidden');
+            
+            // 自動ログインが無効の場合はパスワードをクリア
+            if (!autoLoginCheckbox || !autoLoginCheckbox.checked) {
+                passwordInput.value = '';
+            }
+            
+            showStatus('ログアウトしました。', 'info');
+        });
+        
+        // 設定保存処理
+        saveSettingsBtn.addEventListener('click', () => {
+            // 設定を保存
+            localStorage.setItem('libraryAutoLogin', autoLoginCheckbox.checked ? 'true' : 'false');
+            localStorage.setItem('libraryNotifications', enableNotificationsCheckbox.checked ? 'true' : 'false');
+            
+            // 自動ログインが無効の場合はパスワードを保存しない
+            if (!autoLoginCheckbox.checked) {
+                localStorage.removeItem('libraryPassword');
+            }
+            
+            showStatus('設定を保存しました。', 'success');
+        });
+        
+        // クリアボタン処理
+        clearBtn.addEventListener('click', () => {
+            bookListTextarea.value = '';
+            resultsList.innerHTML = '';
+            resultsContainer.classList.add('hidden');
+        });
+        
+        // 検索・予約処理
+        searchBtn.addEventListener('click', async () => {
+            if (!isLoggedIn) {
+                showStatus('ログインしてください。', 'error');
+                return;
+            }
+            
+            const bookList = bookListTextarea.value.trim();
+            if (!bookList) {
+                showStatus('予約したい本のリストを入力してください。', 'error');
+                return;
+            }
+            
+            // 入力をパース
+            const books = bookList.split('\n').filter(book => book.trim() !== '');
+            
+            if (books.length === 0) {
+                showStatus('有効な本のエントリがありません。', 'error');
+                return;
+            }
+            
+            // 検索と予約の処理を開始
+            loadingIndicator.classList.remove('hidden');
+            resultsList.innerHTML = '';
+            resultsContainer.classList.add('hidden');
+            
+            try {
+                const results = await processBooks(books);
+                
+                // 予約結果を保存
+                saveReservationHistory(books, results);
+                
+                // 通知が有効な場合
+                if (enableNotificationsCheckbox && enableNotificationsCheckbox.checked && results.successCount > 0) {
+                    try {
+                        // 通知APIが利用可能かチェック
+                        if ('Notification' in window) {
+                            if (Notification.permission === 'granted') {
+                                new Notification('図書館予約完了', {
+                                    body: `${results.successCount}冊の予約が完了しました。`,
+                                    icon: '/favicon.ico'
+                                });
+                            } else if (Notification.permission !== 'denied') {
+                                Notification.requestPermission().then(permission => {
+                                    if (permission === 'granted') {
+                                        new Notification('図書館予約完了', {
+                                            body: `${results.successCount}冊の予約が完了しました。`,
+                                            icon: '/favicon.ico'
+                                        });
+                                    }
+                                });
+                            }
+                        }
+                    } catch (error) {
+                        console.error('通知エラー:', error);
+                    }
+                }
+            } catch (error) {
+                showStatus(`エラーが発生しました: ${error.message}`, 'error');
+            } finally {
+                loadingIndicator.classList.add('hidden');
+                resultsContainer.classList.remove('hidden');
+            }
+        });
+        
+        // 図書館システムへのログイン処理
+        async function loginToLibrary(username, password) {
+            try {
+                // 注意: この実装はデモ用であり、実際の図書館システムではCORSポリシーなどにより
+                // 直接JavaScriptからのアクセスができない場合があります。
+                // 実運用では、バックエンドを介した連携が必要です。
+                
+                // 図書館システムでは主にフォーム送信による認証が使われることが多いため、
+                // FormDataを使用してPOSTリクエストを模擬します
+                const formData = new FormData();
+                formData.append('username', username);
+                formData.append('password', password);
+                
+                // 実際の運用では、以下のようなコードでログイン処理を行いますが、
+                // CORSの制限のため、このコードはクライアントサイドでは動作しません。
+                // バックエンドサーバーを介して処理する必要があります。
+                /*
+                const response = await fetch(`${LIBRARY_BASE_URL}/login`, {
+                    method: 'POST',
+                    body: formData,
+                    credentials: 'include' // Cookieを含める
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                return {
+                    success: true,
+                    sessionToken: data.sessionToken || 'dummy-token'
+                };
+                */
+                
+                // デモ用のダミー処理
+                await new Promise(resolve => setTimeout(resolve, 1000)); // 1秒の遅延
+                
+                // 実際の図書館システムとの連携には、サーバーサイドの処理が必要です
+                return {
+                    success: true,
+                    sessionToken: 'demo-session-token'
+                };
+            } catch (error) {
+                console.error('ログインエラー:', error);
+                return {
+                    success: false,
+                    error: error.message
+                };
+            }
+        }を入力してください。', 'error');
+                return;
+            }
+            
+            loadingIndicator.classList.remove('hidden');
+            
+            try {
+                // 実際の図書館システムにログインリクエストを送信
+                const loginResult = await loginToLibrary(username, password);
+                
+                if (loginResult.success) {
+                    showStatus('ログインに成功しました。', 'success');
+                    isLoggedIn = true;
+                    sessionToken = loginResult.sessionToken;
+                    
+                    // フォームの切り替え
+                    loginForm.classList.add('hidden');
+                    reservationForm.classList.remove('hidden');
+                } else {
+                    showStatus(`ログインに失敗しました: ${loginResult.error}`, 'error');
+                }
+            } catch (error) {
+                showStatus(`ログイン処理中にエラーが発生しました: ${error.message}`, 'error');
+            } finally {
+                loadingIndicator.classList.add('hidden');
+            }
+        });
+        
+        // 検索・予約処理
+        searchBtn.addEventListener('click', async () => {
+            if (!isLoggedIn) {
+                showStatus('ログインしてください。', 'error');
+                return;
+            }
+            
+            const bookList = bookListTextarea.value.trim();
+            if (!bookList) {
+                showStatus('予約したい本のリストを入力してください。', 'error');
+                return;
+            }
+            
+            // 入力をパース
+            const books = bookList.split('\n').filter(book => book.trim() !== '');
+            
+            if (books.length === 0) {
+                showStatus('有効な本のエントリがありません。', 'error');
+                return;
+            }
+            
+            // 検索と予約の処理を開始
+            loadingIndicator.classList.remove('hidden');
+            resultsList.innerHTML = '';
+            resultsContainer.classList.add('hidden');
+            
+            try {
+                await processBooks(books);
+            } catch (error) {
+                showStatus(`エラーが発生しました: ${error.message}`, 'error');
+            } finally {
+                loadingIndicator.classList.add('hidden');
+                resultsContainer.classList.remove('hidden');
+            }
+        });
+        
+        // 図書館システムへのログイン処理
+        async function loginToLibrary(username, password) {
+            try {
+                // 注意: この実装はデモ用であり、実際の図書館システムではCORSポリシーなどにより
+                // 直接JavaScriptからのアクセスができない場合があります。
+                // 実運用では、バックエンドを介した連携が必要です。
+                
+                // 図書館システムでは主にフォーム送信による認証が使われることが多いため、
+                // FormDataを使用してPOSTリクエストを模擬します
+                const formData = new FormData();
+                formData.append('username', username);
+                formData.append('password', password);
+                
+                // 実際の運用では、以下のようなコードでログイン処理を行いますが、
+                // CORSの制限のため、このコードはクライアントサイドでは動作しません。
+                // バックエンドサーバーを介して処理する必要があります。
+                /*
+                const response = await fetch(`${LIBRARY_BASE_URL}/login`, {
+                    method: 'POST',
+                    body: formData,
+                    credentials: 'include' // Cookieを含める
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                return {
+                    success: true,
+                    sessionToken: data.sessionToken || 'dummy-token'
+                };
+                */
+                
+                // デモ用のダミー処理
+                await new Promise(resolve => setTimeout(resolve, 1000)); // 1秒の遅延
+                
+                // 実際の図書館システムとの連携には、サーバーサイドの処理が必要です
+                return {
+                    success: true,
+                    sessionToken: 'demo-session-token'
+                };
+            } catch (error) {
+                console.error('ログインエラー:', error);
+                return {
+                    success: false,
+                    error: error.message
+                };
+            }
+        }
+        
+        // 本のリストを処理する関数
+        async function processBooks(books) {
+            // 処理済み書籍のカウンター
+            let processedCount = 0;
+            let successCount = 0;
+            
+            for (const book of books) {
+                // タイトルと著者を分割
+                const match = book.match(/『(.+?)』(.+)/);
+                if (!match) {
+                    addBookResult(book, 'フォーマットエラー', false);
+                    processedCount++;
+                    continue;
+                }
+                
+                const title = match[1];
+                const author = match[2].trim();
+                
+                try {
+                    // 実際の図書館システムで検索
+                    const searchResults = await searchBook(title, author);
+                    
+                    if (searchResults.found) {
+                        // 本が見つかった場合、予約処理
+                        const reservationResult = await reserveBook(searchResults.bookId);
+                        
+                        addBookResult(
+                            book, 
+                            reservationResult.success ? '予約完了' : `予約失敗: ${reservationResult.error}`, 
+                            reservationResult.success
+                        );
+                        
+                        if (reservationResult.success) {
+                            successCount++;
+                        }
+                    } else {
+                        // 本が見つからなかった場合
+                        addBookResult(book, `見つかりませんでした: ${searchResults.error || '該当する資料がありません'}`, false);
+                    }
+                } catch (error) {
+                    addBookResult(book, `処理エラー: ${error.message}`, false);
+                }
+                
+                processedCount++;
+            }
+            
+            showStatus(`${books.length}冊の処理が完了しました。${successCount}冊の予約に成功しました。`, 'success');
+        }
+        
+        // 図書館システムで本を検索する関数
+        async function searchBook(title, author) {
+            try {
+                // 注意: 実際の運用では、以下のようなコードで検索処理を行いますが、
+                // CORSの制限のため、このコードはクライアントサイドでは動作しません。
+                // バックエンドサーバーを介して処理する必要があります。
+                /*
+                // 検索用のURLパラメータを構築
+                const params = new URLSearchParams({
+                    title: title,
+                    author: author,
+                    format: 'json'
+                });
+                
+                const response = await fetch(`${LIBRARY_BASE_URL}/search?${params.toString()}`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${sessionToken}`
+                    },
+                    credentials: 'include'
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data.items && data.items.length > 0) {
+                    return {
+                        found: true,
+                        bookId: data.items[0].id,
+                        title: data.items[0].title,
+                        author: data.items[0].author,
+                        available: data.items[0].available
+                    };
+                } else {
+                    return {
+                        found: false,
+                        error: '検索結果が見つかりません'
+                    };
+                }
+                */
+                
+                // デモ用のダミー検索処理
+                await new Promise(resolve => setTimeout(resolve, 800 + Math.random() * 1200)); // 0.8〜2秒の遅延
+                
+                // 図書館の実際の検索システムでは、タイトルと著者を使って検索を行います
+                // ここではデモ用に、特定のタイトルの場合のみ見つかったとする処理を実装
+                const specialTitles = [
+                    '起業のファイナンス',
+                    'ストーリーとしての競争戦略',
+                    'ファイナンス思考'
+                ];
+                
+                const isSpecialTitle = specialTitles.some(t => title.includes(t));
+                const foundProbability = isSpecialTitle ? 0.9 : 0.6; // 特定のタイトルは高確率で見つかる
+                const found = Math.random() < foundProbability;
+                
+                if (found) {
+                    return {
+                        found: true,
+                        bookId: `book-${Math.floor(Math.random() * 10000)}`,
+                        title: title,
+                        author: author,
+                        available: Math.random() > 0.5 // 約50%の確率で在庫あり
+                    };
+                } else {
+                    return {
+                        found: false,
+                        error: Math.random() > 0.5 ? '該当する資料がありません' : '検索条件を変更してお試しください'
+                    };
+                }
+            } catch (error) {
+                console.error('検索エラー:', error);
+                return {
+                    found: false,
+                    error: error.message
+                };
+            }
+        }
+        
+        // 図書館システムで本を予約する関数
+        async function reserveBook(bookId) {
+            try {
+                // 注意: 実際の運用では、以下のようなコードで予約処理を行いますが、
+                // CORSの制限のため、このコードはクライアントサイドでは動作しません。
+                // バックエンドサーバーを介して処理する必要があります。
+                /*
+                const formData = new FormData();
+                formData.append('bookId', bookId);
+                
+                const response = await fetch(`${LIBRARY_BASE_URL}/reserve`, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Authorization': `Bearer ${sessionToken}`
+                    },
+                    credentials: 'include'
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                return {
+                    success: data.success,
+                    error: data.error || null,
+                    reservationId: data.reservationId || null
+                };
+                */
+                
+                // デモ用のダミー予約処理
+                await new Promise(resolve => setTimeout(resolve, 500 + Math.random() * 1000)); // 0.5〜1.5秒の遅延
+                
+                // 90%の確率で予約成功とする
+                const success = Math.random() < 0.9;
+                
+                if (success) {
+                    return {
+                        success: true,
+                        reservationId: `res-${Math.floor(Math.random() * 10000)}`
+                    };
+                } else {
+                    const errors = [
+                        '既に予約済みです',
+                        '予約上限に達しています',
+                        '一時的にシステムが混雑しています'
+                    ];
+                    return {
+                        success: false,
+                        error: errors[Math.floor(Math.random() * errors.length)]
+                    };
+                }
+            } catch (error) {
+                console.error('予約エラー:', error);
+                return {
+                    success: false,
+                    error: error.message
+                };
+            }
+        }
+    </script>
+</body>
+</html>
